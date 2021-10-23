@@ -9,6 +9,7 @@ import ru.akirakozov.sd.refactoring.servlet.QueryServlet;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.SQLException;
 import java.sql.Statement;
 
 /**
@@ -16,6 +17,28 @@ import java.sql.Statement;
  */
 public class Main {
     public static void main(String[] args) throws Exception {
+        createProductTable();
+
+        Server server = configureServer();
+
+        server.start();
+        server.join();
+    }
+
+    private static Server configureServer() {
+        Server server = new Server(8081);
+
+        ServletContextHandler context = new ServletContextHandler(ServletContextHandler.SESSIONS);
+        context.setContextPath("/");
+        server.setHandler(context);
+
+        context.addServlet(new ServletHolder(new AddProductServlet()), "/add-product");
+        context.addServlet(new ServletHolder(new GetProductsServlet()),"/get-products");
+        context.addServlet(new ServletHolder(new QueryServlet()),"/query");
+        return server;
+    }
+
+    private static void createProductTable() throws SQLException {
         try (Connection c = DriverManager.getConnection("jdbc:sqlite:test.db")) {
             String sql = "CREATE TABLE IF NOT EXISTS PRODUCT" +
                     "(ID INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL," +
@@ -26,18 +49,5 @@ public class Main {
             stmt.executeUpdate(sql);
             stmt.close();
         }
-
-        Server server = new Server(8081);
-
-        ServletContextHandler context = new ServletContextHandler(ServletContextHandler.SESSIONS);
-        context.setContextPath("/");
-        server.setHandler(context);
-
-        context.addServlet(new ServletHolder(new AddProductServlet()), "/add-product");
-        context.addServlet(new ServletHolder(new GetProductsServlet()),"/get-products");
-        context.addServlet(new ServletHolder(new QueryServlet()),"/query");
-
-        server.start();
-        server.join();
     }
 }
