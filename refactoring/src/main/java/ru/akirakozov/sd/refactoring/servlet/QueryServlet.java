@@ -4,10 +4,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.ResultSet;
-import java.sql.Statement;
 
 /**
  * @author akirakozov
@@ -18,19 +14,22 @@ public class QueryServlet extends HttpServlet {
         String command = request.getParameter("command");
 
         if ("max".equals(command)) {
-            DatabaseHandler.getMaxPriceProduct(response);
+            Product product = DatabaseHandler.getMaxPriceProduct(response);
+            HtmlPrinter.printMaxPriceProduct(response, product);
         } else if ("min".equals(command)) {
-            DatabaseHandler.getMinPriceProduct(response);
+            Product product = DatabaseHandler.getMinPriceProduct(response);
+            HtmlPrinter.printMinPriceProduct(response, product);
         } else if ("sum".equals(command)) {
-            DatabaseHandler.getSumPriceProducts(response);
+            long sum = DatabaseHandler.getSumPriceProducts(response);
+            HtmlPrinter.printSumPrice(response, sum);
         } else if ("count".equals(command)) {
-            DatabaseHandler.getCountProducts(response);
+            long count = DatabaseHandler.getCountProducts(response);
+            HtmlPrinter.printCountProducts(response, count);
         } else {
-            response.getWriter().println("Unknown command: " + command);
+            HtmlPrinter.printUnknownCommand(response, command);
         }
 
         response.setContentType("text/html");
         response.setStatus(HttpServletResponse.SC_OK);
     }
-
 }

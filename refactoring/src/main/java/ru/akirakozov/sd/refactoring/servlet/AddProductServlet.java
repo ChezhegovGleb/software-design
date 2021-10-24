@@ -19,6 +19,7 @@ public class AddProductServlet extends HttpServlet {
 
         response.setContentType("text/html");
         response.setStatus(HttpServletResponse.SC_OK);
-        response.getWriter().println("OK");
+
+        HtmlPrinter.printOk(response);
     }
 }

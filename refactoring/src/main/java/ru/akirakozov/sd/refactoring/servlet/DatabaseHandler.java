@@ -1,8 +1,9 @@
 package ru.akirakozov.sd.refactoring.servlet;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class DatabaseHandler {
     public static void createTableProduct() {
@@ -34,22 +35,23 @@ public class DatabaseHandler {
         }
     }
 
-    static void getProducts(HttpServletResponse response) {
+    static List<Product> getProducts() {
         try {
             try (Connection c = DriverManager.getConnection("jdbc:sqlite:test.db")) {
                 Statement stmt = c.createStatement();
                 ResultSet rs = stmt.executeQuery("SELECT * FROM PRODUCT");
-                response.getWriter().println("<html><body>");
+
+                ArrayList<Product> listProducts = new ArrayList<>();
 
                 while (rs.next()) {
                     String name = rs.getString("name");
                     int price = rs.getInt("price");
-                    response.getWriter().println(name + "\t" + price + "</br>");
+                    listProducts.add(new Product(name, (long) price));
                 }
-                response.getWriter().println("</body></html>");
 
                 rs.close();
                 stmt.close();
+                return listProducts;
             }
 
         } catch (Exception e) {
@@ -57,87 +59,79 @@ public class DatabaseHandler {
         }
     }
 
-    static void getMaxPriceProduct(HttpServletResponse response) {
+    static Product getMaxPriceProduct(HttpServletResponse response) {
         try (Connection c = DriverManager.getConnection("jdbc:sqlite:test.db")) {
             Statement stmt = c.createStatement();
             ResultSet rs = stmt.executeQuery("SELECT * FROM PRODUCT ORDER BY PRICE DESC LIMIT 1");
-            response.getWriter().println("<html><body>");
-            response.getWriter().println("<h1>Product with max price: </h1>");
 
+            Product product = null;
             while (rs.next()) {
                 String name = rs.getString("name");
                 int price = rs.getInt("price");
-                response.getWriter().println(name + "\t" + price + "</br>");
+                product = new Product(name, (long) price);
             }
-            response.getWriter().println("</body></html>");
 
             rs.close();
             stmt.close();
-
+            return product;
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
     }
 
-    static void getMinPriceProduct(HttpServletResponse response) {
+    static Product getMinPriceProduct(HttpServletResponse response) {
         try (Connection c = DriverManager.getConnection("jdbc:sqlite:test.db")) {
             Statement stmt = c.createStatement();
             ResultSet rs = stmt.executeQuery("SELECT * FROM PRODUCT ORDER BY PRICE LIMIT 1");
-            response.getWriter().println("<html><body>");
-            response.getWriter().println("<h1>Product with min price: </h1>");
 
+            Product product = null;
             while (rs.next()) {
                 String name = rs.getString("name");
                 int price = rs.getInt("price");
-                response.getWriter().println(name + "\t" + price + "</br>");
+                product = new Product(name, (long) price);
             }
-            response.getWriter().println("</body></html>");
 
             rs.close();
             stmt.close();
+            return product;
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
     }
 
-    static void getSumPriceProducts(HttpServletResponse response) {
+    static long getSumPriceProducts(HttpServletResponse response) {
         try (Connection c = DriverManager.getConnection("jdbc:sqlite:test.db")) {
             Statement stmt = c.createStatement();
             ResultSet rs = stmt.executeQuery("SELECT SUM(price) FROM PRODUCT");
-            response.getWriter().println("<html><body>");
-            response.getWriter().println("Summary price: ");
 
+            long sum = 0;
             if (rs.next()) {
-                response.getWriter().println(rs.getInt(1));
+                sum = rs.getInt(1);
             }
-            response.getWriter().println("</body></html>");
 
             rs.close();
             stmt.close();
-
+            return sum;
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
     }
 
-    static void getCountProducts(HttpServletResponse response) {
+    static long getCountProducts(HttpServletResponse response) {
         try (Connection c = DriverManager.getConnection("jdbc:sqlite:test.db")) {
             Statement stmt = c.createStatement();
             ResultSet rs = stmt.executeQuery("SELECT COUNT(*) FROM PRODUCT");
-            response.getWriter().println("<html><body>");
-            response.getWriter().println("Number of products: ");
 
+            long count = 0;
             if (rs.next()) {
-                response.getWriter().println(rs.getInt(1));
+                count = rs.getInt(1);
             }
-            response.getWriter().println("</body></html>");
 
             rs.close();
             stmt.close();
+            return count;
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
     }
-
-
 }
