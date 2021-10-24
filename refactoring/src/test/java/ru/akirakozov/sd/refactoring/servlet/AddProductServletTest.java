@@ -87,7 +87,7 @@ public class AddProductServletTest {
     }
 
     @Test
-    public void doGetWithEmptylNameTest() throws Exception {
+    public void doGetWithEmptyNameTest() throws Exception {
         when(request.getParameter("name")).thenReturn("");
         when(request.getParameter("price")).thenReturn("10000");
         when(response.getWriter()).thenReturn(new PrintWriter(stringWriter));
@@ -102,7 +102,7 @@ public class AddProductServletTest {
     }
 
     @Test(expected = NumberFormatException.class)
-    public void doGetWithEmptylPriceTest() throws Exception {
+    public void doGetWithEmptyPriceTest() throws Exception {
         when(request.getParameter("name")).thenReturn("iphone8");
         when(request.getParameter("price")).thenReturn("");
         when(response.getWriter()).thenReturn(new PrintWriter(stringWriter));

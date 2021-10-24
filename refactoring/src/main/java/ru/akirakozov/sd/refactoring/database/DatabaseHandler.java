@@ -1,4 +1,6 @@
-package ru.akirakozov.sd.refactoring.servlet;
+package ru.akirakozov.sd.refactoring.database;
+
+import ru.akirakozov.sd.refactoring.dataclasses.Product;
 
 import javax.servlet.http.HttpServletResponse;
 import java.sql.*;
@@ -21,7 +23,7 @@ public class DatabaseHandler {
         }
     }
 
-    static void addProduct(String name, Long price) {
+    public static void addProduct(String name, Long price) {
         try {
             try (Connection c = DriverManager.getConnection("jdbc:sqlite:test.db")) {
                 String sql = "INSERT INTO PRODUCT " +
@@ -35,7 +37,7 @@ public class DatabaseHandler {
         }
     }
 
-    static List<Product> getProducts() {
+    public static List<Product> getProducts() {
         try {
             try (Connection c = DriverManager.getConnection("jdbc:sqlite:test.db")) {
                 Statement stmt = c.createStatement();
@@ -59,7 +61,7 @@ public class DatabaseHandler {
         }
     }
 
-    static Product getMaxPriceProduct(HttpServletResponse response) {
+    public static Product getMaxPriceProduct(HttpServletResponse response) {
         try (Connection c = DriverManager.getConnection("jdbc:sqlite:test.db")) {
             Statement stmt = c.createStatement();
             ResultSet rs = stmt.executeQuery("SELECT * FROM PRODUCT ORDER BY PRICE DESC LIMIT 1");
@@ -79,7 +81,7 @@ public class DatabaseHandler {
         }
     }
 
-    static Product getMinPriceProduct(HttpServletResponse response) {
+    public static Product getMinPriceProduct(HttpServletResponse response) {
         try (Connection c = DriverManager.getConnection("jdbc:sqlite:test.db")) {
             Statement stmt = c.createStatement();
             ResultSet rs = stmt.executeQuery("SELECT * FROM PRODUCT ORDER BY PRICE LIMIT 1");
@@ -99,7 +101,7 @@ public class DatabaseHandler {
         }
     }
 
-    static long getSumPriceProducts(HttpServletResponse response) {
+    public static long getSumPriceProducts(HttpServletResponse response) {
         try (Connection c = DriverManager.getConnection("jdbc:sqlite:test.db")) {
             Statement stmt = c.createStatement();
             ResultSet rs = stmt.executeQuery("SELECT SUM(price) FROM PRODUCT");
@@ -117,7 +119,7 @@ public class DatabaseHandler {
         }
     }
 
-    static long getCountProducts(HttpServletResponse response) {
+    public static long getCountProducts(HttpServletResponse response) {
         try (Connection c = DriverManager.getConnection("jdbc:sqlite:test.db")) {
             Statement stmt = c.createStatement();
             ResultSet rs = stmt.executeQuery("SELECT COUNT(*) FROM PRODUCT");

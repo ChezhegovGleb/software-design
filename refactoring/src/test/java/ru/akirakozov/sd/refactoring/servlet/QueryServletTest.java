@@ -11,7 +11,6 @@ import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.sql.SQLException;
 
-import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 
 public class QueryServletTest {

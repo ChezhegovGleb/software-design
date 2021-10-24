@@ -1,5 +1,8 @@
 package ru.akirakozov.sd.refactoring.servlet;
 
+import ru.akirakozov.sd.refactoring.database.DatabaseHandler;
+import ru.akirakozov.sd.refactoring.html.HtmlPrinter;
+
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;

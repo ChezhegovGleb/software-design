@@ -4,7 +4,7 @@ import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
 import ru.akirakozov.sd.refactoring.servlet.AddProductServlet;
-import ru.akirakozov.sd.refactoring.servlet.DatabaseHandler;
+import ru.akirakozov.sd.refactoring.database.DatabaseHandler;
 import ru.akirakozov.sd.refactoring.servlet.GetProductsServlet;
 import ru.akirakozov.sd.refactoring.servlet.QueryServlet;
 

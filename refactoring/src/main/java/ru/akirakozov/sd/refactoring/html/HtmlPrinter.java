@@ -1,4 +1,6 @@
-package ru.akirakozov.sd.refactoring.servlet;
+package ru.akirakozov.sd.refactoring.html;
+
+import ru.akirakozov.sd.refactoring.dataclasses.Product;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
